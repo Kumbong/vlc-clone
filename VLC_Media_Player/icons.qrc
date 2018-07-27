@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/icons/decreaseVolume.png</file>
+        <file>images/icons/effectsAndFilters.png</file>
+        <file>images/icons/exit.png</file>
+        <file>images/icons/help.png</file>
+        <file>images/icons/increaseVolume.png</file>
+        <file>images/icons/information.jpg</file>
+        <file>images/icons/jumpBackward.png</file>
+        <file>images/icons/jumpForward.png</file>
+        <file>images/icons/messages.png</file>
+        <file>images/icons/next.png</file>
+        <file>images/icons/openCaptureDevice.jpg</file>
+        <file>images/icons/openDisc.png</file>
+        <file>images/icons/openFile.png</file>
+        <file>images/icons/openFolder.png</file>
+        <file>images/icons/openNetworkStream.png</file>
+        <file>images/icons/play.png</file>
+        <file>images/icons/playlist.png</file>
+        <file>images/icons/preferences.png</file>
+        <file>images/icons/previous.png</file>
+        <file>images/icons/quit.png</file>
+        <file>images/icons/record.png</file>
+        <file>images/icons/stop.png</file>
+        <file>images/icons/stream.png</file>
+        <file>images/icons/muteVolume.png</file>
+        <file>images/icons/windowIcon.png</file>
+        <file>images/icons/refresh.png</file>
+        <file>images/icons/extendedSettings.jpg</file>
+        <file>images/icons/random.jpg</file>
+        <file>images/icons/toggleFullScreen.png</file>
+        <file>images/icons/togglePlaylist.png</file>
+        <file>images/icons/toggleRepeat.png</file>
+        <file>images/icons/loopOnce.png</file>
+    </qresource>
+</RCC>
