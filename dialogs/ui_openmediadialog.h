@@ -23,7 +23,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QListView>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QRadioButton>
 #include <QtWidgets/QSpacerItem>
@@ -43,9 +43,9 @@ public:
     QWidget *tab;
     QGroupBox *groupBox;
     QLabel *label;
-    QListWidget *listWidget;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
+    QListView *listView;
+    QPushButton *addButton;
+    QPushButton *removeButton;
     QGroupBox *groupBox_2;
     QLineEdit *lineEdit;
     QPushButton *pushButton_3;
@@ -154,15 +154,15 @@ public:
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(10, 20, 311, 20));
-        listWidget = new QListWidget(groupBox);
-        listWidget->setObjectName(QStringLiteral("listWidget"));
-        listWidget->setGeometry(QRect(10, 40, 371, 111));
-        pushButton = new QPushButton(groupBox);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(390, 40, 71, 23));
-        pushButton_2 = new QPushButton(groupBox);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(390, 70, 71, 23));
+        listView = new QListView(groupBox);
+        listView->setObjectName(QStringLiteral("listView"));
+        listView->setGeometry(QRect(10, 40, 371, 111));
+        addButton = new QPushButton(groupBox);
+        addButton->setObjectName(QStringLiteral("addButton"));
+        addButton->setGeometry(QRect(390, 40, 71, 23));
+        removeButton = new QPushButton(groupBox);
+        removeButton->setObjectName(QStringLiteral("removeButton"));
+        removeButton->setGeometry(QRect(390, 70, 71, 23));
         groupBox_2 = new QGroupBox(tab);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
         groupBox_2->setGeometry(QRect(10, 180, 471, 51));
@@ -577,7 +577,7 @@ public:
 
         retranslateUi(openMediaDialog);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(openMediaDialog);
@@ -588,8 +588,8 @@ public:
         openMediaDialog->setWindowTitle(QApplication::translate("openMediaDialog", "Open Media", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("openMediaDialog", "File Selection", Q_NULLPTR));
         label->setText(QApplication::translate("openMediaDialog", "You can select local files with the following lists and buttions.", Q_NULLPTR));
-        pushButton->setText(QApplication::translate("openMediaDialog", "Add...", Q_NULLPTR));
-        pushButton_2->setText(QApplication::translate("openMediaDialog", "Remove", Q_NULLPTR));
+        addButton->setText(QApplication::translate("openMediaDialog", "Add...", Q_NULLPTR));
+        removeButton->setText(QApplication::translate("openMediaDialog", "Remove", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("openMediaDialog", "Use a subtitle file", Q_NULLPTR));
         pushButton_3->setText(QApplication::translate("openMediaDialog", "Browse...", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("openMediaDialog", "File", Q_NULLPTR));

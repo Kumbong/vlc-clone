@@ -1,27 +1,20 @@
 #ifndef PLAYLISTMODEL_H
 #define PLAYLISTMODEL_H
-#include <QtWidgets>
 
+#include <QAbstractItemModel>
 class QMediaPlaylist;
 
-class PlaylistModel : public QAbstractTableModel
+
+class PlaylistModel : public QAbstractItemModel
 {
-public:
-    enum{
-        Title,
-        Duration,
-        Album
-    };
-    PlaylistModel(QObject *parent=nullptr);
-    int rowCount(const QModelIndex &parent= QModelIndex()) const;
-    int columnCount(const QModelIndex &parent =QModelIndex()) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-    void setPlaylist(QMediaPlaylist *list);
-public slots:
-    void mediaChanged(int count);
+ void setPlaylist(QMediaPlaylist *playlist);
+ QVariant data(const QModelIndex &index, int role) const override;
+ int columnCount(const QModelIndex &parent) const override;
+ int rowCount(const QModelIndex &parent) const override;
+PlaylistModel(QMediaPlaylist *playlist,QObject *parent);
+
 private:
-       QMediaPlaylist *m_playlist;
+    QMediaPlaylist *m_playlist;
 
 };
 

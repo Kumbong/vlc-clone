@@ -1,6 +1,4 @@
 #include "playerpage.h"
-//remove after testing
-#include "models/playlistmodel.h"
 #include "mediacontroler.h"
 #include "playlistpage.h"
 #include <QtWidgets>
@@ -8,17 +6,12 @@
 #include <QGraphicsVideoItem>
 #include <QtDebug>
 
-/*************************bug list**************************************/
-//-1 views are not updated as soon as media is added to the playlist when in playlistViewMode
-// views are however updated when the playlist viewmode is changed
-/***********************************************************************/
 const qreal FASTER_FINE = 1.1;
 const qreal FASTER = 1.5;
 const qreal SLOWER_FINE= 0.9;
 const qreal SLOWER = 0.6;
 const qreal NORMAL = 1.0;
 const qreal STEP =0.1;
-
 const qreal MAX_RATE = 32.0;
 const qreal MIN_RATE = 0.01;
 
@@ -26,13 +19,23 @@ const qreal JUMP_RATE = 0.025;
 
 PlayerPage::PlayerPage(QWidget *parent) : QWidget(parent)
 {
+    //change to read from settings
+         isDockedPlaylist = true;
+
+
+    //end change
    setAcceptDrops(true);
    playerControler = new MediaControler;
    videoWidget = new QVideoWidget;
    videoWidget->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
    videoWidget->setMinimumHeight(0);
    //videoWidget->setFullScreen(true);
+    playlistPage = new PlaylistPage;
 
+   stackedWidget = new QStackedWidget;
+   stackedWidget->addWidget(videoWidget);
+   stackedWidget->addWidget(playlistPage);
+   stackedWidget->setCurrentWidget(videoWidget);
 
    player = new QMediaPlayer(this);
    playlist = new QMediaPlaylist;
@@ -42,15 +45,14 @@ PlayerPage::PlayerPage(QWidget *parent) : QWidget(parent)
    player->play();
 
    QPalette pal= videoWidget->palette();
-   pal.setBrush(QPalette::Window,QBrush(Qt::black));
-   videoWidget->setAutoFillBackground(true);
+   pal.setBrush(QPalette::Window,QBrush(QPixmap(":/images/icons/windowIcon.png")));
+   //videoWidget->setAutoFillBackground(false);
    videoWidget->setPalette(pal);
 
    player->setVideoOutput(videoWidget);
-   layout = new QVBoxLayout;
+   QVBoxLayout *layout = new QVBoxLayout;
 
-   playlistPage = new PlaylistPage(playlist);
-   layout->addWidget(playlistPage);
+   layout->addWidget(stackedWidget);
    layout->addWidget(playerControler);
    layout->setSpacing(0);
    layout->setMargin(0);
@@ -79,12 +81,6 @@ PlayerPage::PlayerPage(QWidget *parent) : QWidget(parent)
    connect(playerControler,&MediaControler::sliderPositionChanged,player,&QMediaPlayer::setPosition);
    connect(playlist,&QMediaPlaylist::currentIndexChanged,this,&PlayerPage::currentIndexChanged);
    connect(playlist,&QMediaPlaylist::currentMediaChanged,this,&PlayerPage::currentIndexChanged);
-
-
-  connect(this,&PlayerPage::mediaAdded,playlistPage,&PlaylistPage::mediaAdded);
-
-  //************************************
-  pl_viewMode = PlaylistViewMode::DetailedList;
 }
 
 qint64 PlayerPage::mediaDuration() const
@@ -102,18 +98,12 @@ qreal PlayerPage::mediaRate() const
     return player->playbackRate();
 }
 
-QMediaPlaylist *PlayerPage::getPlaylist()
-{
-    return playlist;
-}
-
 void PlayerPage::load(const QList<QUrl> &urls)
 {
   QListIterator<QUrl> i(urls);
   while(i.hasNext()){
       playlist->addMedia(i.next());
   }
-  emit mediaAdded(urls.count());
   playlist->setCurrentIndex(playlist->mediaCount()-1);
   player->play();
 }
@@ -121,7 +111,6 @@ void PlayerPage::load(const QList<QUrl> &urls)
 void PlayerPage::load(const QString &fileName)
 {
     playlist->addMedia(QUrl(fileName));
-    emit mediaAdded(1);
     playlist->setCurrentIndex(playlist->mediaCount()-1);
     player->play();
 }
@@ -297,40 +286,32 @@ void PlayerPage::setPlaylistMode(int mode)
        playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
 }
 
-void PlayerPage::playlistViewModeChanged(PlaylistViewMode mode)
+void PlayerPage::togglePlaylistView(bool isPlaylistView)
 {
-    pl_viewMode = mode;
-    qDebug()<<"View mode signal received "<<mode;
-    delete playlistPage;
-    delete layout;
-    layout = new QVBoxLayout;
-    playlistPage = new PlaylistPage(playlist,mode);
-    //playlistPage->changePlaylistView(mode);
-
-    if(dockedView)
-        layout->addWidget(playlistPage);
-    else{
-        layout->addWidget(videoWidget);
-        playlistPage->show();
+    if(isPlaylistView){
+        if(isDockedPlaylist){
+            stackedWidget->setCurrentWidget(playlistPage);
+        }
+        else{
+            //playlistPage->setWindowFlags(Qt::Window);
+            playlistPage->show();
+        }
     }
-    layout->addWidget(playerControler);
-    setLayout(layout);
-    update();
+    else{
+            stackedWidget->setCurrentWidget(videoWidget);
+               if(!isDockedPlaylist)
+                   playlistPage->hide();
+    }
 }
 
-void PlayerPage::changeView(bool isPlaylist, bool isDockedPlaylist)
+void PlayerPage::toggleDockedPlaylistView(bool isDockedPlaylist)
 {
-
-}
-
-void PlayerPage::setDockedView(bool isDockedView)
-{
-    dockedView = isDockedView;
+     this->isDockedPlaylist = isDockedPlaylist;
 }
 
 void PlayerPage::dragEnterEvent(QDragEnterEvent *event)
 {
-    // if(event->mimeData())
+
 }
 
 void PlayerPage::dropEvent(QDropEvent *event)

@@ -1,17 +1,16 @@
-#ifndef MAINWINDOW_H
+ #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QList>
 #include <QMediaPlayer>
-#include "playernamespace.h"
 class QLabel;
 class QActionGroup;
 class PlayerPage;
-class PlaylistPage;
 class QMediaPlayer;
 class QVideoWidget;
 class QStatusBar;
+class PlaylistPage;
 
 namespace Ui {
 class MainWindow;
@@ -24,9 +23,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-signals:
-    void playlistViewModeChanged(PlaylistViewMode);
-    void viewToggled(bool playlist, bool toggled);
+
 private slots:
     //slots for media menu
     void openFile();
@@ -97,19 +94,12 @@ private slots:
     void preferences();
 
     //slots for the view menu
-    void playlistView(bool checked);
-    void dockedPlayList(bool checked);
+    void dockedPlayList(bool);
     void minimalInterface(bool);
-    void iconViewMode(bool);
-    void detailedViewMode(bool);
-    void listViewMode(bool);
-    void PictureFlowViewMode(bool);
-
     void fullScreenInterface(bool);
     void advancedControls(bool);
     void showStatusBar(bool show);
     void donwloadSubtitles();
-
 
     //slots for the help menu
     void help();

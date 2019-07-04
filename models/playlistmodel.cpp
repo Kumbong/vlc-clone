@@ -1,69 +1,54 @@
 #include "playlistmodel.h"
-#include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include <QtWidgets>
 #include <QFileInfo>
-PlaylistModel::PlaylistModel(QObject* parent):QAbstractTableModel(parent)
+#include <QtWidgets>
+#include <QMediaPlayer>
+
+PlaylistModel::PlaylistModel(QMediaPlaylist *playlist,QObject *parent):QAbstractItemModel(parent)
 {
+    m_playlist = playlist;
+}
+int PlaylistModel::rowCount(const QModelIndex &parent) const{
+
+    if(m_playlist && !parent.isValid())
+        return m_playlist->mediaCount();
+    else
+        return 0;
 
 }
-
-int PlaylistModel::rowCount(const QModelIndex &parent) const
-{
-
-    return m_playlist->mediaCount();
+int PlaylistModel::columnCount(const QModelIndex &parent) const{
+    if(!parent.isValid())
+        return 3;
 }
-int PlaylistModel::columnCount(const QModelIndex &parent) const
-{
-    return 3;
-}
-
-QVariant PlaylistModel::data(const QModelIndex &index, int role) const
-{
-    int row = index.row();
-    int column =index.column();
-
-    if(role==Qt::DisplayRole &&column==Title){
-        return QVariant(QFileInfo(m_playlist->media(row).canonicalUrl().toLocalFile()).fileName());
-    }
-    else if(role==Qt::DisplayRole && column==Duration) {
-         return QVariant();
-
-
-    }
-    else if(role==Qt::DecorationRole && column==Title){
-        return QVariant(QPixmap(":/windowIcon.png"));
-    }
-    else{
+QVariant PlaylistModel::data(const QModelIndex &index, int role) const{
+    if(!index.isValid())
         return QVariant();
+
+    if(!index.parent().isValid()){//if the index has no parent
+       if(index.column()==0){
+            if(role == Qt::DisplayRole){
+
+                QVariant variant(QFileInfo(m_playlist->currentMedia().canonicalUrl().toString()).fileName());
+                return variant;
+              }
+             if(role = Qt::DecorationRole){
+                QVariant variant(QIcon(":/images/icons/openFile.png"));
+                return variant;
+              }
+        }
+     if(index.column()==1){
+           if(role ==Qt::DisplayRole){
+               QMediaPlayer temp;
+               temp.setMedia(m_playlist->media(index.row()));
+               return QVariant(temp.duration());
+           }
+
+       }
     }
-
-}
-void PlaylistModel::setPlaylist(QMediaPlaylist *list){
-    m_playlist = list;
 }
 
-void PlaylistModel::mediaChanged(int count)
-{
-      beginInsertRows(QModelIndex(),rowCount(),rowCount()+count);
-      //model does not keep a copy of the playlist but rather keeps a pointer to an external playlist
-      //count represents the number of media added to the playlist
-      //notifies the view of the external changes to the model
-      endInsertRows();
 
+void PlaylistModel::setPlaylist(QMediaPlaylist *playlist){
+    m_playlist = playlist;
 
-}
-QVariant PlaylistModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if(section == Title && role == Qt::DisplayRole &&orientation ==Qt::Horizontal)
-        return QVariant("Title");
-    else if(section == Duration && role==Qt::DisplayRole &&orientation  ==Qt::Horizontal)
-        return QVariant("Duration");
-    else if(section == Album && role==Qt::DisplayRole &&orientation ==Qt::Horizontal)
-        return QVariant("Album");
-
-    if(role == Qt::TextAlignmentRole)
-        return QVariant(Qt::AlignLeft);
-
-    return QVariant();
 }

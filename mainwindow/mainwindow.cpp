@@ -10,11 +10,7 @@
 #include "dialogs/messagesdialog.h"
 #include "components/toolbar.h"
 #include "components/playerpage.h"
-#include "models/playlistmodel.h"
-#include "components/playlistpage.h"
 #include "dialogs/gototimedialog.h"
-
-
 #include <QtWidgets>
 
 
@@ -22,11 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
 {
     playerPage = new PlayerPage(this);
-
-
     setCentralWidget(playerPage);
-
-
 
     createActions();
     createMenus();
@@ -36,8 +28,6 @@ MainWindow::MainWindow(QWidget *parent) :
     createToolBar();
     setCurrentFile(QString(""));
     connect(playerPage,&PlayerPage::mediaChanged,this,&MainWindow::setCurrentFile);
-    connect(this,&MainWindow::playlistViewModeChanged,playerPage,&PlayerPage::playlistViewModeChanged);
-    connect(this,&MainWindow::viewToggled,playerPage,&PlayerPage::changeView);
 }
 
 MainWindow::~MainWindow()
@@ -88,7 +78,6 @@ void MainWindow::openFile()
             updateRecentMediaActions();
             setCurrentFile(currentFile);
         }
-
 
 }
 
@@ -393,45 +382,20 @@ void MainWindow::preferences()
 
 }
 
-void MainWindow::playlistView(bool checked)
+void MainWindow::dockedPlayList(bool isDockedPlayList)
 {
-    emit viewToggled(checked,dockedPlayListAction->isChecked());
-}
+    if(isDockedPlayList){
 
-void MainWindow::dockedPlayList(bool checked)
-{
-    emit viewToggled(playListAction->isChecked(),checked);
+    }
+    else{
+
+    }
 }
 
 void MainWindow::minimalInterface(bool actionState)
 {
 
 }
-
-void MainWindow::iconViewMode(bool checked)
-{
-    if(checked)
-        emit playlistViewModeChanged(PlaylistViewMode::Icons);
-}
-
-void MainWindow::detailedViewMode(bool checked)
-{
-    if(checked)
-        emit playlistViewModeChanged(PlaylistViewMode::DetailedList);
-}
-
-void MainWindow::listViewMode(bool checked)
-{
-    if(checked)
-        emit playlistViewModeChanged(PlaylistViewMode::List);
-}
-
-void MainWindow::PictureFlowViewMode(bool checked)
-{
-    if(checked)
-        emit playlistViewModeChanged(PlaylistViewMode::PictureFlow);
-}
-
 
 void MainWindow::fullScreenInterface(bool actionState)
 {
@@ -686,8 +650,6 @@ void MainWindow::createMenus()
         playListViewModeSubMenu->addAction(detailedListAction);
         playListViewModeSubMenu->addAction(listAction);
         playListViewModeSubMenu->addAction(pictureFlowAction);
-        playListViewModeSubMenu->setEnabled(playListAction->isChecked());
-        connect(playListAction,&QAction::toggled,playListViewModeSubMenu,&QMenu::setEnabled);
 
    viewMenu->addSeparator();
 
@@ -1272,16 +1234,13 @@ void MainWindow::createActions(){
     playListAction->setStatusTip(tr(""));//set status tip
     playListAction->setCheckable(true);
     playListAction->setChecked(false);
-    connect(playListAction,&QAction::toggled,this,&MainWindow::playlistView);
-
+   connect(playListAction,&QAction::toggled,playerPage,&PlayerPage::togglePlaylistView);
 
     dockedPlayListAction = new QAction(tr("Docked PlayList"),this);
     dockedPlayListAction->setStatusTip(tr(""));//setstatus tip
     dockedPlayListAction->setCheckable(true);
-    dockedPlayListAction->setChecked(true);
-    playerPage->setDockedView(dockedPlayListAction->isChecked());
-    connect(dockedPlayListAction,&QAction::toggled,this,&MainWindow::dockedPlayList);
-    connect(dockedPlayListAction,&QAction::toggled,playerPage,&PlayerPage::setDockedView);
+    dockedPlayListAction->setChecked(false);
+    connect(dockedPlayListAction,&QAction::toggled,playerPage,&PlayerPage::toggleDockedPlaylistView);
 
         //playlist view submenu
         playListViewModeActionGroup = new QActionGroup(this);
@@ -1289,26 +1248,19 @@ void MainWindow::createActions(){
         iconsAction = new QAction(tr("Icons"),playListViewModeActionGroup);
         iconsAction->setStatusTip(tr(""));
         iconsAction->setCheckable(true);
-        iconsAction->setData(QVariant("Icons"));
-        connect(iconsAction,&QAction::toggled,this,&MainWindow::iconViewMode);
 
         detailedListAction = new QAction(tr("Detailed List"),playListViewModeActionGroup);
         detailedListAction->setStatusTip(tr(""));
         detailedListAction->setCheckable(true);
-        detailedListAction->setData(QVariant("DetailedList"));
-        connect(detailedListAction,&QAction::toggled,this,&MainWindow::detailedViewMode);
 
         listAction = new QAction(tr("List"),playListViewModeActionGroup);
         listAction->setStatusTip(tr(""));
         listAction->setCheckable(true);
-        detailedListAction->setData(QVariant("List"));
-        connect(listAction,&QAction::toggled,this,&MainWindow::listViewMode);
 
         pictureFlowAction = new QAction(tr("Picture Flow"),playListViewModeActionGroup);
         pictureFlowAction->setStatusTip(tr(""));
         pictureFlowAction->setCheckable(true);
-        detailedListAction->setData(QVariant("PictureFlow"));
-        connect(pictureFlowAction,&QAction::toggled,this,&MainWindow::PictureFlowViewMode);
+
 
     minimalInterfaceAction = new QAction(tr("Minimal Interface"),this);
     minimalInterfaceAction->setStatusTip(tr(""));//setstatus tip

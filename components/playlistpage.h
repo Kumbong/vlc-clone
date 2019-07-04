@@ -1,28 +1,30 @@
 #ifndef PLAYLISTPAGE_H
 #define PLAYLISTPAGE_H
-#include "playernamespace.h"
+
 #include <QWidget>
+#include <QtWidgets>
 
-class QAbstractItemView;
-class PlaylistModel;
-class QMediaPlaylist;
+namespace Ui {
+class PlaylistPage;
+}
 
-class PlaylistPage : public QWidget
+enum PLAYLIST_VIEW_MODE{LIST,DETAILED_LIST,PICTURE_FLOW,ICON};
+class PlaylistPage : public QStackedWidget
 {
     Q_OBJECT
+
 public:
-
-    explicit PlaylistPage(QMediaPlaylist *list=nullptr,PlaylistViewMode mode=DetailedList,QWidget *parent = nullptr);
-
-signals:
-
+    explicit PlaylistPage(QWidget *parent = 0);
+    ~PlaylistPage();
 public slots:
-    void changePlaylistView(PlaylistViewMode mode);
-    void setPlaylistModel(QMediaPlaylist *list);
-    void mediaAdded(int count);
+    void switchPlaylistViewMode(PLAYLIST_VIEW_MODE);
+    void toggleDockedView();
 private:
-    QAbstractItemView *view;
-    PlaylistModel *model;
+    QListView *listView;
+    QTableView *tableView;
+    QGraphicsView *graphicsView;
+    bool isDocked;
+
 };
 
 #endif // PLAYLISTPAGE_H

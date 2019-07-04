@@ -27,12 +27,12 @@ QT_BEGIN_NAMESPACE
 class Ui_goToTimeDialog
 {
 public:
-    QWidget *widget;
+    QWidget *layoutWidget;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QTimeEdit *timeEdit;
     QToolButton *toolButton;
-    QWidget *widget1;
+    QWidget *layoutWidget1;
     QHBoxLayout *horizontalLayout_2;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
@@ -41,19 +41,19 @@ public:
     {
         if (goToTimeDialog->objectName().isEmpty())
             goToTimeDialog->setObjectName(QStringLiteral("goToTimeDialog"));
-        goToTimeDialog->resize(203, 76);
-        widget = new QWidget(goToTimeDialog);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(10, 10, 181, 24));
-        horizontalLayout = new QHBoxLayout(widget);
+        goToTimeDialog->resize(198, 70);
+        layoutWidget = new QWidget(goToTimeDialog);
+        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
+        layoutWidget->setGeometry(QRect(10, 10, 181, 24));
+        horizontalLayout = new QHBoxLayout(layoutWidget);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
+        label = new QLabel(layoutWidget);
         label->setObjectName(QStringLiteral("label"));
 
         horizontalLayout->addWidget(label);
 
-        timeEdit = new QTimeEdit(widget);
+        timeEdit = new QTimeEdit(layoutWidget);
         timeEdit->setObjectName(QStringLiteral("timeEdit"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(1);
@@ -65,7 +65,7 @@ public:
 
         horizontalLayout->addWidget(timeEdit);
 
-        toolButton = new QToolButton(widget);
+        toolButton = new QToolButton(layoutWidget);
         toolButton->setObjectName(QStringLiteral("toolButton"));
         QIcon icon;
         icon.addFile(QStringLiteral(":/images/icons/refresh.png"), QSize(), QIcon::Normal, QIcon::On);
@@ -73,18 +73,18 @@ public:
 
         horizontalLayout->addWidget(toolButton);
 
-        widget1 = new QWidget(goToTimeDialog);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(30, 40, 161, 25));
-        horizontalLayout_2 = new QHBoxLayout(widget1);
+        layoutWidget1 = new QWidget(goToTimeDialog);
+        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
+        layoutWidget1->setGeometry(QRect(30, 40, 161, 25));
+        horizontalLayout_2 = new QHBoxLayout(layoutWidget1);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
-        pushButton = new QPushButton(widget1);
+        pushButton = new QPushButton(layoutWidget1);
         pushButton->setObjectName(QStringLiteral("pushButton"));
 
         horizontalLayout_2->addWidget(pushButton);
 
-        pushButton_2 = new QPushButton(widget1);
+        pushButton_2 = new QPushButton(layoutWidget1);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
 
         horizontalLayout_2->addWidget(pushButton_2);

@@ -30,8 +30,8 @@ SOURCES += main.cpp\
     components/mediacontroler.cpp \
     components/playerpage.cpp \
     components/mediaslider.cpp \
-    models/playlistmodel.cpp \
-    components/playlistpage.cpp
+    components/playlistpage.cpp \
+    models/playlistmodel.cpp
 
 HEADERS  += mainwindow/mainwindow.h \
     dialogs/effectsandfiltersdialog.h \
@@ -49,9 +49,7 @@ HEADERS  += mainwindow/mainwindow.h \
     components/playerpage.h \
     components/mediaslider.h \
     components/playlistpage.h \
-    models/playlistmodel.h \
-    components/playlistpage.h \
-    playernamespace.h
+    models/playlistmodel.h
 
 FORMS    += \
     components/bottomtoolbar.ui \
@@ -68,5 +66,4 @@ FORMS    += \
 
 RESOURCES += \
     icons.qrc \
-    stylesheets.qrc \
-    testingaids.qrc
+    stylesheets.qrc

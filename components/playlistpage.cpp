@@ -1,72 +1,57 @@
 #include "playlistpage.h"
-#include <QtWidgets>
-#include "models/playlistmodel.h"
-#include <QMediaPlaylist>
-//changes in media loaded dont show immediately when media is loaded while in playlist mode
-PlaylistPage::PlaylistPage(QMediaPlaylist *list, PlaylistViewMode mode, QWidget *parent ) : QWidget(parent)
+#include "ui_playlistpage.h"
+
+PlaylistPage::PlaylistPage(QWidget *parent) :
+    QStackedWidget(parent)
 {
-     view = nullptr;
+       listView = new QListView;
+       graphicsView = new QGraphicsView;
+       tableView = new QTableView;
+
+       listView->setMovement(QListView::Free);
+       listView->setResizeMode(QListView::Adjust);
+
+       tableView->horizontalHeader()->stretchLastSection();
+       tableView->resizeColumnsToContents();
+       tableView->setSortingEnabled(true);
+       tableView->setWordWrap(false);
+
+       addWidget(listView);
+       addWidget(graphicsView);
+       addWidget(tableView);
 
 
-     model = new PlaylistModel(this);
 
-     setPlaylistModel(list);
-     changePlaylistView(mode);
-     QHBoxLayout *layout = new QHBoxLayout;
-     layout->addWidget(view);
-     setLayout(layout);
 }
 
-void PlaylistPage::changePlaylistView(PlaylistViewMode mode)
+PlaylistPage::~PlaylistPage()
 {
-    //make sure that the view is instatiated when this widget is created
 
-    if(mode == Icons){
-        //set the model here
-
-        QListView *lview = new QListView;
-        lview->setModel(model);
-        lview->setAlternatingRowColors(true);
-        lview->setViewMode(QListView::IconMode);
-        lview->setWordWrap(false);
-
-        view = lview;
-    }
-    else if(mode == DetailedList){
-        QTableView *tview = new QTableView;
-        tview->setAlternatingRowColors(true);
-        tview->setModel(model);
-        tview->setShowGrid(false);
-        tview->horizontalHeader()->setStretchLastSection(true);
-        tview->setAlternatingRowColors(true);
-        tview->setColumnWidth(0,300);
-        tview->setColumnWidth(1,300);
-        tview->setWordWrap(false);
-
-        view = tview;
-
-    }
-    else if(mode == List){
-        QListView *lview = new QListView;
-        lview->setModel(model);
-        lview->setAlternatingRowColors(true);
-        lview->setViewMode(QListView::ListMode);
-        lview->setWordWrap(false);
-
-        view = lview;
-    }
-    else if(mode == PictureFlow){
-
-    }
-    update();
 }
 
-void PlaylistPage::setPlaylistModel(QMediaPlaylist *list)
+void PlaylistPage::switchPlaylistViewMode(PLAYLIST_VIEW_MODE mode)
 {
-    model->setPlaylist(list);
+  switch(mode) {
+    case PLAYLIST_VIEW_MODE::LIST: if(currentWidget() != listView) setCurrentWidget(listView);
+        listView->setFlow(QListView::TopToBottom);
+        listView->setWrapping(false);
+        listView->setViewMode(QListView::ListMode);
+        break;
+    case PLAYLIST_VIEW_MODE::ICON: if(currentWidget() != listView) setCurrentWidget(listView);
+        listView->setFlow(QListView::LeftToRight);
+        listView->setWrapping(true);
+        listView->setViewMode(QListView::IconMode);
+        break;
+    case PLAYLIST_VIEW_MODE::DETAILED_LIST: setCurrentWidget(tableView);
+        break;
+    case PLAYLIST_VIEW_MODE::PICTURE_FLOW: setCurrentWidget(graphicsView);
+        break;
+    default:
+        break;
+    }
 }
 
-void PlaylistPage::mediaAdded(int count)
+void PlaylistPage::toggleDockedView()
 {
-   model->mediaChanged(count);
+
 }
