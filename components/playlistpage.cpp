@@ -1,6 +1,6 @@
 #include "playlistpage.h"
 #include <QtWidgets>
-#include "playlistmodel.h"
+#include "models/playlistmodel.h"
 #include <QMediaPlaylist>
 //changes in media loaded dont show immediately when media is loaded while in playlist mode
 PlaylistPage::PlaylistPage(QMediaPlaylist *list, PlaylistViewMode mode, QWidget *parent ) : QWidget(parent)

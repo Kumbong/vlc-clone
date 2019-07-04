@@ -1,6 +1,6 @@
 #include "playerpage.h"
 //remove after testing
-#include "playlistmodel.h"
+#include "models/playlistmodel.h"
 #include "mediacontroler.h"
 #include "playlistpage.h"
 #include <QtWidgets>

@@ -1,6 +1,6 @@
-#include "mainwindow.h"
+#include "mainwindow/mainwindow.h"
 #include <QApplication>
-#include "playlistpage.h"
+#include "components/playlistpage.h"
 
 int main(int argc, char *argv[])
 {
