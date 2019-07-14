@@ -113,6 +113,14 @@ private slots:
 private:
 
     //helper functions
+    void createMediaMenu();
+    void createPlayBackMenu();
+    void createAudioMenu();
+    void createVideoMenu();
+    void createSubTitleMenu();
+    void createToolsMenu();
+    void createViewMenu();
+    void createHelpMenu();
     void createMenus();
     void createActions();
     void createStatusBar();

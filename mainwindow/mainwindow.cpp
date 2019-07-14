@@ -99,25 +99,6 @@ void MainWindow::openFolder()
    dialog.exec();
 }
 
-void MainWindow::openDisc()
-{
-
-}
-
-void MainWindow::openNetworkStream()
-{
-
-}
-
-void MainWindow::openCaptureDevice()
-{
-
-}
-
-void MainWindow::openLocationFromClipBoard()
-{
-
-}
 
 void MainWindow::openRecentMedia()
 {
@@ -140,10 +121,6 @@ void MainWindow::clearRecentMedia()
 
 }
 
-void MainWindow::saveToPlaylist()
-{
-
-}
 
 void MainWindow::savePlayListToFile()
 {
@@ -153,536 +130,278 @@ void MainWindow::savePlayListToFile()
 
    dialog.exec();
 }
-
-void MainWindow::convertAndSave()
-{
-
-}
-
-void MainWindow::stream()
-{
-
-}
-
-void MainWindow::quitAtEndOfPlaylist(bool actionState)
-{
-
-}
-
-void MainWindow::menu()
-{
-
-}
-
-void MainWindow::faster()
-{
-
-}
-
-void MainWindow::slower()
-{
-
-}
-
-void MainWindow::jumpForward()
-{
-
-}
-
-void MainWindow::jumpBackward()
-{
-
-}
-
-void MainWindow::jumpToSpecificTime()
-{
-     goToTimeDialog *dialog = new goToTimeDialog(this);
-     connect(dialog,&goToTimeDialog::goToTime,playerPage,&PlayerPage::goToTime);
-     dialog->exec();
-
-}
-
-void MainWindow::play()
-{
-    if(currentFile.isEmpty())
-         openMultipleFiles();
-    else
-         playerPage->play();
-}
-
-void MainWindow::stop()
-{
-
-}
-
-void MainWindow::previous()
-{
-
-}
-
-void MainWindow::next()
-{
-
-}
-
-void MainWindow::record()
-{
-
-}
-
-void MainWindow::disableAudio()
-{
-
-}
-
-void MainWindow::track1()
-{
-
-}
-
-void MainWindow::spectrometerVisualization()
-{
-
-}
-
-void MainWindow::scopeVisualization()
-{
-
-}
-
-void MainWindow::spectrumVisaulization()
-{
-
-}
-
-void MainWindow::vuMeterVisualization()
-{
-
-}
-
-void MainWindow::goomVisualization()
-{
-
-}
-
-void MainWindow::disableVideo()
-{
-
-}
-
-void MainWindow::fullScreen(bool actionState)
-{
-
-}
-
-void MainWindow::alwaysFitWindow(bool actionState)
-{
-
-}
-
-void MainWindow::alwaysOnTop(bool actionState)
-{
-
-}
-
-void MainWindow::setAsWallpaper(bool actionState)
-{
-
-}
-
-void MainWindow::zoom()
-{
-
-}
-
-void MainWindow::setAspectRatio()
-{
-
-}
-
-void MainWindow::deInterlace()
-{
-
-}
-
-void MainWindow::deInterLaceMode()
-{
-
-}
-
-void MainWindow::postProcessing()
-{
-
-}
-
-void MainWindow::takeSnapshot()
-{
-
-}
-
-void MainWindow::addSubtitleFile()
-{
-
-}
-
-void MainWindow::subTrack()
-{
-
-}
-
-void MainWindow::effectsAndFilters()
-{
-   effectsAndFiltersDialog dialog(this);
-   dialog.exec();
-}
-
-void MainWindow::trackSynchronization()
-{
-
-}
-
-void MainWindow::mediaInformation()
-{
-  mediaInformationDialog dialog(this);
-  dialog.exec();
-}
-
-void MainWindow::codecInformation()
-{
-
-}
-
-void MainWindow::VLMConfiguration()
-{
-
-}
-
-void MainWindow::programGuide()
-{
-
-}
-
-void MainWindow::messages()
-{
-
-}
-
-void MainWindow::pluginsAndExtensions()
-{
-
-}
-
-void MainWindow::customiseInterface()
-{
-
-}
-
-void MainWindow::preferences()
-{
-
-}
-
-void MainWindow::dockedPlayList(bool isDockedPlayList)
-{
-    if(isDockedPlayList){
-
+void MainWindow::createMediaMenu(){
+    mediaMenu = menuBar()->addMenu(tr("&Media"));
+    mediaMenu->addAction(openFileAction);
+    mediaMenu->addAction(openMultipleFilesAction);
+    mediaMenu->addAction(openFolderAction);
+    mediaMenu->addAction(openDiscAction);
+    mediaMenu->addAction(openNetworkStreamAction);
+    mediaMenu->addAction(openCaptureDeviceAction);
+    mediaMenu->addAction(openLocationFromClipBoardAction);
+    openRecentMediaSubMenu = mediaMenu->addMenu(tr("Open Recent Media"));
+    for(int j=0; j<MaxRecentFiles;j++){
+        openRecentMediaSubMenu->addAction(recentFileActions[j]);
     }
-    else{
+    seperatorAction = openRecentMediaSubMenu->addSeparator();
+    seperatorAction->setVisible(false);
+    openRecentMediaSubMenu->addAction(clearAction);
+    openRecentMediaSubMenu->addAction(saveToPlaylistAction);
 
-    }
+    mediaMenu->addSeparator();
+
+    mediaMenu->addAction(savePlayListToFileAction);
+    mediaMenu->addAction(convertAndSaveAction);
+    mediaMenu->addAction(streamAction);
+    mediaMenu->addSeparator();
+
+    mediaMenu->addAction(quitAtEndOfPlaylistAction);
+    mediaMenu->addAction(quitAction);
+}
+void MainWindow::createPlayBackMenu(){
+    playBackMenu = menuBar()->addMenu(tr("P&layback"));
+    titleSubMenu = playBackMenu->addMenu(tr("Title"));
+    titleSubMenu->setEnabled(false);
+    chapterSubMenu = playBackMenu->addMenu(tr("Chapter"));
+    chapterSubMenu->setEnabled(false);
+    programmeSubMenu = playBackMenu->addMenu(tr("Programme"));
+    programmeSubMenu->setEnabled(false);
+    customBookmarksSubMenu = playBackMenu->addMenu(tr("Custom Bookmarks"));
+    customBookmarksSubMenu->setEnabled(false);
+    playBackMenu->addSeparator();
+
+    speedSubMenu = playBackMenu->addMenu(tr("Speed"));
+        //speedSubMenu->addAction(speedSeperator);
+        speedSubMenu->addAction(fasterAction);
+        speedSubMenu->addAction(fasterFineAction);
+        speedSubMenu->addAction(normalSpeedAction);
+        speedSubMenu->addAction(slowerFineAction);
+        speedSubMenu->addAction(slowerAction);
+        speedSubMenu->setTearOffEnabled(true);
+        //speedSubMenu->setEnabled(false);
+
+    playBackMenu->addSeparator();
+    playBackMenu->addAction(jumpForwardAction);
+    playBackMenu->addAction(jumpBackwardAction);
+    playBackMenu->addAction(jumpToSpecificTimeAction);
+    playBackMenu->addSeparator();
+
+    playBackMenu->addAction(playAction);
+    playBackMenu->addAction(stopAction);
+    playBackMenu->addAction(previousAction);
+    playBackMenu->addAction(nextAction);
+    playBackMenu->addAction(recordAction);
+
 }
 
-void MainWindow::minimalInterface(bool actionState)
-{
+void MainWindow::createAudioMenu(){
+    audioMenu = menuBar()->addMenu(tr("&Audio"));
+    audioTrackSubMenu = audioMenu->addMenu(tr("Audio Track"));
+    //Audio Track submenu
+         //audioTrackSubMenu->setEnabled(false);
+         audioTrackSubMenu->addAction(audioTrack_disableAction);
+         audioTrackSubMenu->addAction(audioTrack_track1Action);
+
+    audioDeviceSubMenu = audioMenu->addMenu(tr("Audio Device"));
+    //Audio Device submenu
+        //audioDeviceSubMenu->setEnabled(false);
+        audioDeviceSubMenu->addAction(audioDevice_defaultAction);
+
+
+    stereoModeSubMenu = audioMenu->addMenu(tr("Stereo Mode"));
+    //Stereo Mode sub menu
+         //stereoModeSubMenu->setEnabled(false);
+        stereoModeSubMenu->addAction(stereoMode_stereoAction);
+        stereoModeSubMenu->addAction(stereoMode_leftAction);
+        stereoModeSubMenu->addAction(stereoMode_rightAction);
+        stereoModeSubMenu->addAction(stereoMode_reverseAction);
+    audioMenu->addSeparator();
+
+    visualizationsSubMenu = audioMenu->addMenu(tr("VisualizationsAction"));
+    //Visualizations sub menu
+         //visualizationsSubMenu->setEnabled(false);
+    visualizationsSubMenu->addAction(visualizations_disableAction);
+    visualizationsSubMenu->addAction(visualizations_spectrometerAction);
+    visualizationsSubMenu->addAction(visualizations_scopeAction);
+    visualizationsSubMenu->addAction(visualizations_spectrumAction);
+    visualizationsSubMenu->addAction(visualizations_vuMeterAction);
+    visualizationsSubMenu->addAction(visualizations_goomAction);
+    audioMenu->addSeparator();
+
+    audioMenu->addAction(increaseVolumeAction);
+    audioMenu->addAction(decreaseVolumeAction);
+    audioMenu->addAction(muteVolumeAction);
+}
+void MainWindow::createVideoMenu(){
+    videoMenu = menuBar()->addMenu(tr("&Video"));
+
+    videoTrackSubMenu = videoMenu->addMenu(tr("Video Track"));
+    //Video Track sub menu
+         //videoTrackSubMenu->setEnabled(false);
+         videoTrackSubMenu->addAction(videoTrack_disableAction);
+         videoTrackSubMenu->addAction(videoTrack_track1Action);
+
+    videoMenu->addSeparator();
+
+    videoMenu->addAction(fullScreenAction);
+    videoMenu->addAction(alwaysFitWindowAction);
+    videoMenu->addAction(alwaysOnTopAction);
+    videoMenu->addAction(setAsWallpaperAction);
+    videoMenu->addSeparator();
+
+    zoomSubMenu = videoMenu->addMenu(tr("Zoom"));
+    //Zoom sub menu
+        //zoomSubMenu->setEnabled(false);
+        zoomSubMenu->addAction(zoom_quarterAction);
+        zoomSubMenu->addAction(zoom_halfAction);
+        zoomSubMenu->addAction(zoom_originalAction);
+        zoomSubMenu->addAction(zoom_doubleAction);
+
+    aspectRatioSubMenu = videoMenu->addMenu(tr("Aspect Ratio"));
+    //Aspect Ratio submenu
+        //aspectRatioSubMenu->setEnabled(false);
+        aspectRatioSubMenu->addAction(aspectRatio_defaultAction);
+        aspectRatioSubMenu->addAction(aspectRatio_16_9_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_4_3_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_1_1_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_16_9_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_2_21_1_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_2_35_1_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_2_39_1_Action);
+        aspectRatioSubMenu->addAction(aspectRatio_5_4_Action);
+
+    cropSubMenu = videoMenu->addMenu(tr("Crop"));
+    //Crop submenu
+        //cropSubMenu->setEnabled(false);
+        cropSubMenu->addAction(crop_defaultAction);
+        cropSubMenu->addAction(crop_16_10_Action);
+        cropSubMenu->addAction(crop_16_9_Action);
+        cropSubMenu->addAction(crop_4_3_Action);
+        cropSubMenu->addAction(crop_1_85_1_Action);
+        cropSubMenu->addAction(crop_2_21_1_Action);
+        cropSubMenu->addAction(crop_2_35_1_Action);
+        cropSubMenu->addAction(crop_2_39_1_Action);
+        cropSubMenu->addAction(crop_5_3_Action);
+        cropSubMenu->addAction(crop_5_4_Action);
+        cropSubMenu->addAction(crop_1_1_Action);
+
+    videoMenu->addSeparator();
+
+    deInterlaceSubMenu = videoMenu->addMenu(tr("Deinterlace"));
+    //Deinterlace submenu
+        //deInterlaceSubMenu->setEnabled(false);
+        deInterlaceSubMenu->addAction(deInterlace_offAction);
+        deInterlaceSubMenu->addAction(deInterlace_automaticAction);
+        deInterlaceSubMenu->addAction(deInterlace_onAction);
+
+    deInterlaceModeSubMenu = videoMenu->addMenu(tr("DeInterlace Mode"));
+    //Deinterlace submenu
+        //deInterlaceModeSubMenu->setEnabled(false);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_discardAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_blendAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_meanAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_bobAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_linearAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_xAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_yadifAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_yadif_2x_Action);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_phosphorAction);
+        deInterlaceModeSubMenu->addAction(deInterlaceMode_filmAction);
+
+    postProcessingSubMenu = videoMenu->addMenu(tr("Post Processing"));
+    //Postprocessing submenu
+        //postProcessingSubMenu->setEnabled(false);
+        postProcessingSubMenu->addAction(postProcessing_disableAction);
+        postProcessingSubMenu->addSeparator();
+        postProcessingSubMenu->addAction(postProcessing_lowestAction);
+        postProcessingSubMenu->addAction(postProcessing_middleAction);
+        postProcessingSubMenu->addAction(postProcessing_highestAction);
+
+    videoMenu->addSeparator();
+
+    videoMenu->addAction(takeSnapshotAction);
+}
+
+void MainWindow::createToolsMenu(){
+    toolsMenu = menuBar()->addMenu(tr("T&ools"));
+    toolsMenu->addAction(effectsAndFiltersAction);
+    toolsMenu->addAction(trackSynchronizationAction);
+    toolsMenu->addAction(mediaInformationAction);
+    toolsMenu->addAction(codecInformationAction);
+    toolsMenu->addAction(VLMConfigurationAction);
+    toolsMenu->addAction(programGuideAction);
+    toolsMenu->addAction(messagesAction);
+    toolsMenu->addAction(pluginsAndExtensionsAction);
+    toolsMenu->addSeparator();
+
+    toolsMenu->addAction(customiseInterfaceAction);
+    toolsMenu->addAction(preferencesAction);
 
 }
 
-void MainWindow::fullScreenInterface(bool actionState)
-{
+void MainWindow::createViewMenu(){
+    viewMenu = menuBar()->addMenu(tr("V&iew"));
+    viewMenu->addAction(playListAction);
+    viewMenu->addAction(dockedPlayListAction);
+
+    playListViewModeSubMenu = viewMenu->addMenu(tr("Playlist View Mode"));
+    //Playlist view mode submenu
+         playListViewModeSubMenu->addAction(iconsAction);
+         playListViewModeSubMenu->addAction(detailedListAction);
+         playListViewModeSubMenu->addAction(listAction);
+         playListViewModeSubMenu->addAction(pictureFlowAction);
+
+    viewMenu->addSeparator();
+
+    viewMenu->addAction(minimalInterfaceAction);
+    viewMenu->addAction(fullScreenInterfaceAction);
+    viewMenu->addAction(advancedControlsAction);
+    viewMenu->addAction(statusBarAction);
+    viewMenu->addSeparator();
+
+    addInterfaceSubMenu = viewMenu->addMenu(tr("Add Interface"));
+    //Add Interface submenu
+        addInterfaceSubMenu->addAction(consoleAction);
+        addInterfaceSubMenu->addAction(telnetAction);
+        addInterfaceSubMenu->addAction(webAction);
+        addInterfaceSubMenu->addAction(debugLoggingAction);
+        addInterfaceSubMenu->addAction(mouseGesturesAction);
+
+    viewMenu->addSeparator();
+    viewMenu->addAction(downloadSubtitlesAction);
+
 
 }
 
-void MainWindow::advancedControls(bool actionState)
-{
+void MainWindow::createHelpMenu(){
+    helpMenu = menuBar()->addMenu(tr("&Help"));
+    helpMenu->addAction(helpAction);
+    helpMenu->addAction(checkForUpdatesAction);
+    helpMenu->addSeparator();
 
+    helpMenu->addAction(aboutAction);
 }
+void MainWindow::createSubTitleMenu(){
+    subtitleMenu = menuBar()->addMenu(tr("Subti&tle"));
+    subtitleMenu->addAction(addSubtitleFileAction);
 
-void MainWindow::donwloadSubtitles()
-{
-
-}
-
-void MainWindow::help()
-{
-
-}
-
-void MainWindow::checkForUpdates()
-{
-
-}
-
-void MainWindow::about()
-{
+    subTrackSubMenu = subtitleMenu->addMenu(tr("Sub Track"));
+    subTrackSubMenu->setEnabled(false);
 
 }
 
 void MainWindow::createMenus()
 {
 
-
-   mediaMenu = menuBar()->addMenu(tr("&Media"));
-   mediaMenu->addAction(openFileAction);
-   mediaMenu->addAction(openMultipleFilesAction);
-   mediaMenu->addAction(openFolderAction);
-   mediaMenu->addAction(openDiscAction);
-   mediaMenu->addAction(openNetworkStreamAction);
-   mediaMenu->addAction(openCaptureDeviceAction);
-   mediaMenu->addAction(openLocationFromClipBoardAction);
-   openRecentMediaSubMenu = mediaMenu->addMenu(tr("Open Recent Media"));
-   for(int j=0; j<MaxRecentFiles;j++){
-       openRecentMediaSubMenu->addAction(recentFileActions[j]);
-   }
-   seperatorAction = openRecentMediaSubMenu->addSeparator();
-   seperatorAction->setVisible(false);
-   openRecentMediaSubMenu->addAction(clearAction);
-   openRecentMediaSubMenu->addAction(saveToPlaylistAction);
-
-   mediaMenu->addSeparator();
-
-   mediaMenu->addAction(savePlayListToFileAction);
-   mediaMenu->addAction(convertAndSaveAction);
-   mediaMenu->addAction(streamAction);
-   mediaMenu->addSeparator();
-
-   mediaMenu->addAction(quitAtEndOfPlaylistAction);
-   mediaMenu->addAction(quitAction);
-
-
-   playBackMenu = menuBar()->addMenu(tr("P&layback"));
-   titleSubMenu = playBackMenu->addMenu(tr("Title"));
-   titleSubMenu->setEnabled(false);
-   chapterSubMenu = playBackMenu->addMenu(tr("Chapter"));
-   chapterSubMenu->setEnabled(false);
-   programmeSubMenu = playBackMenu->addMenu(tr("Programme"));
-   programmeSubMenu->setEnabled(false);
-   customBookmarksSubMenu = playBackMenu->addMenu(tr("Custom Bookmarks"));
-   customBookmarksSubMenu->setEnabled(false);
-   playBackMenu->addSeparator();
-
-   speedSubMenu = playBackMenu->addMenu(tr("Speed"));
-       //speedSubMenu->addAction(speedSeperator);
-       speedSubMenu->addAction(fasterAction);
-       speedSubMenu->addAction(fasterFineAction);
-       speedSubMenu->addAction(normalSpeedAction);
-       speedSubMenu->addAction(slowerFineAction);
-       speedSubMenu->addAction(slowerAction);
-       speedSubMenu->setTearOffEnabled(true);
-       //speedSubMenu->setEnabled(false);
-
-   playBackMenu->addSeparator();
-   playBackMenu->addAction(jumpForwardAction);
-   playBackMenu->addAction(jumpBackwardAction);
-   playBackMenu->addAction(jumpToSpecificTimeAction);
-   playBackMenu->addSeparator();
-
-   playBackMenu->addAction(playAction);
-   playBackMenu->addAction(stopAction);
-   playBackMenu->addAction(previousAction);
-   playBackMenu->addAction(nextAction);
-   playBackMenu->addAction(recordAction);
-
-
-   audioMenu = menuBar()->addMenu(tr("&Audio"));
-   audioTrackSubMenu = audioMenu->addMenu(tr("Audio Track"));
-   //Audio Track submenu
-        //audioTrackSubMenu->setEnabled(false);
-        audioTrackSubMenu->addAction(audioTrack_disableAction);
-        audioTrackSubMenu->addAction(audioTrack_track1Action);
-
-   audioDeviceSubMenu = audioMenu->addMenu(tr("Audio Device"));
-   //Audio Device submenu
-       //audioDeviceSubMenu->setEnabled(false);
-       audioDeviceSubMenu->addAction(audioDevice_defaultAction);
-
-
-   stereoModeSubMenu = audioMenu->addMenu(tr("Stereo Mode"));
-   //Stereo Mode sub menu
-        //stereoModeSubMenu->setEnabled(false);
-       stereoModeSubMenu->addAction(stereoMode_stereoAction);
-       stereoModeSubMenu->addAction(stereoMode_leftAction);
-       stereoModeSubMenu->addAction(stereoMode_rightAction);
-       stereoModeSubMenu->addAction(stereoMode_reverseAction);
-   audioMenu->addSeparator();
-
-   visualizationsSubMenu = audioMenu->addMenu(tr("VisualizationsAction"));
-   //Visualizations sub menu
-        //visualizationsSubMenu->setEnabled(false);
-   visualizationsSubMenu->addAction(visualizations_disableAction);
-   visualizationsSubMenu->addAction(visualizations_spectrometerAction);
-   visualizationsSubMenu->addAction(visualizations_scopeAction);
-   visualizationsSubMenu->addAction(visualizations_spectrumAction);
-   visualizationsSubMenu->addAction(visualizations_vuMeterAction);
-   visualizationsSubMenu->addAction(visualizations_goomAction);
-   audioMenu->addSeparator();
-
-   audioMenu->addAction(increaseVolumeAction);
-   audioMenu->addAction(decreaseVolumeAction);
-   audioMenu->addAction(muteVolumeAction);
-
-
-
-   videoMenu = menuBar()->addMenu(tr("&Video"));
-
-   videoTrackSubMenu = videoMenu->addMenu(tr("Video Track"));
-   //Video Track sub menu
-        //videoTrackSubMenu->setEnabled(false);
-        videoTrackSubMenu->addAction(videoTrack_disableAction);
-        videoTrackSubMenu->addAction(videoTrack_track1Action);
-
-   videoMenu->addSeparator();
-
-   videoMenu->addAction(fullScreenAction);
-   videoMenu->addAction(alwaysFitWindowAction);
-   videoMenu->addAction(alwaysOnTopAction);
-   videoMenu->addAction(setAsWallpaperAction);
-   videoMenu->addSeparator();
-
-   zoomSubMenu = videoMenu->addMenu(tr("Zoom"));
-   //Zoom sub menu
-       //zoomSubMenu->setEnabled(false);
-       zoomSubMenu->addAction(zoom_quarterAction);
-       zoomSubMenu->addAction(zoom_halfAction);
-       zoomSubMenu->addAction(zoom_originalAction);
-       zoomSubMenu->addAction(zoom_doubleAction);
-
-   aspectRatioSubMenu = videoMenu->addMenu(tr("Aspect Ratio"));
-   //Aspect Ratio submenu
-       //aspectRatioSubMenu->setEnabled(false);
-       aspectRatioSubMenu->addAction(aspectRatio_defaultAction);
-       aspectRatioSubMenu->addAction(aspectRatio_16_9_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_4_3_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_1_1_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_16_9_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_2_21_1_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_2_35_1_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_2_39_1_Action);
-       aspectRatioSubMenu->addAction(aspectRatio_5_4_Action);
-
-   cropSubMenu = videoMenu->addMenu(tr("Crop"));
-   //Crop submenu
-       //cropSubMenu->setEnabled(false);
-       cropSubMenu->addAction(crop_defaultAction);
-       cropSubMenu->addAction(crop_16_10_Action);
-       cropSubMenu->addAction(crop_16_9_Action);
-       cropSubMenu->addAction(crop_4_3_Action);
-       cropSubMenu->addAction(crop_1_85_1_Action);
-       cropSubMenu->addAction(crop_2_21_1_Action);
-       cropSubMenu->addAction(crop_2_35_1_Action);
-       cropSubMenu->addAction(crop_2_39_1_Action);
-       cropSubMenu->addAction(crop_5_3_Action);
-       cropSubMenu->addAction(crop_5_4_Action);
-       cropSubMenu->addAction(crop_1_1_Action);
-
-   videoMenu->addSeparator();
-
-   deInterlaceSubMenu = videoMenu->addMenu(tr("Deinterlace"));
-   //Deinterlace submenu
-       //deInterlaceSubMenu->setEnabled(false);
-       deInterlaceSubMenu->addAction(deInterlace_offAction);
-       deInterlaceSubMenu->addAction(deInterlace_automaticAction);
-       deInterlaceSubMenu->addAction(deInterlace_onAction);
-
-   deInterlaceModeSubMenu = videoMenu->addMenu(tr("DeInterlace Mode"));
-   //Deinterlace submenu
-       //deInterlaceModeSubMenu->setEnabled(false);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_discardAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_blendAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_meanAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_bobAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_linearAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_xAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_yadifAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_yadif_2x_Action);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_phosphorAction);
-       deInterlaceModeSubMenu->addAction(deInterlaceMode_filmAction);
-
-   postProcessingSubMenu = videoMenu->addMenu(tr("Post Processing"));
-   //Postprocessing submenu
-       //postProcessingSubMenu->setEnabled(false);
-       postProcessingSubMenu->addAction(postProcessing_disableAction);
-       postProcessingSubMenu->addSeparator();
-       postProcessingSubMenu->addAction(postProcessing_lowestAction);
-       postProcessingSubMenu->addAction(postProcessing_middleAction);
-       postProcessingSubMenu->addAction(postProcessing_highestAction);
-
-   videoMenu->addSeparator();
-
-   videoMenu->addAction(takeSnapshotAction);
-
-   subtitleMenu = menuBar()->addMenu(tr("Subti&tle"));
-   subtitleMenu->addAction(addSubtitleFileAction);
-   subTrackSubMenu = subtitleMenu->addMenu(tr("Sub Track"));
-   subTrackSubMenu->setEnabled(false);
-
-   toolsMenu = menuBar()->addMenu(tr("T&ools"));
-   toolsMenu->addAction(effectsAndFiltersAction);
-   toolsMenu->addAction(trackSynchronizationAction);
-   toolsMenu->addAction(mediaInformationAction);
-   toolsMenu->addAction(codecInformationAction);
-   toolsMenu->addAction(VLMConfigurationAction);
-   toolsMenu->addAction(programGuideAction);
-   toolsMenu->addAction(messagesAction);
-   toolsMenu->addAction(pluginsAndExtensionsAction);
-   toolsMenu->addSeparator();
-
-   toolsMenu->addAction(customiseInterfaceAction);
-   toolsMenu->addAction(preferencesAction);
-
-
-   viewMenu = menuBar()->addMenu(tr("V&iew"));
-   viewMenu->addAction(playListAction);
-   viewMenu->addAction(dockedPlayListAction);
-
-   playListViewModeSubMenu = viewMenu->addMenu(tr("Playlist View Mode"));
-   //Playlist view mode submenu
-        playListViewModeSubMenu->addAction(iconsAction);
-        playListViewModeSubMenu->addAction(detailedListAction);
-        playListViewModeSubMenu->addAction(listAction);
-        playListViewModeSubMenu->addAction(pictureFlowAction);
-
-   viewMenu->addSeparator();
-
-   viewMenu->addAction(minimalInterfaceAction);
-   viewMenu->addAction(fullScreenInterfaceAction);
-   viewMenu->addAction(advancedControlsAction);
-   viewMenu->addAction(statusBarAction);
-   viewMenu->addSeparator();
-
-   addInterfaceSubMenu = viewMenu->addMenu(tr("Add Interface"));
-   //Add Interface submenu
-       addInterfaceSubMenu->addAction(consoleAction);
-       addInterfaceSubMenu->addAction(telnetAction);
-       addInterfaceSubMenu->addAction(webAction);
-       addInterfaceSubMenu->addAction(debugLoggingAction);
-       addInterfaceSubMenu->addAction(mouseGesturesAction);
-
-   viewMenu->addSeparator();
-   viewMenu->addAction(downloadSubtitlesAction);
-
-
-   helpMenu = menuBar()->addMenu(tr("&Help"));
-   helpMenu->addAction(helpAction);
-   helpMenu->addAction(checkForUpdatesAction);
-   helpMenu->addSeparator();
-
-   helpMenu->addAction(aboutAction);
+   createMediaMenu();
+   createPlayBackMenu();
+   createAudioMenu();
+   createVideoMenu();
+   createSubTitleMenu();
+   createToolsMenu();
+   createViewMenu();
+   createHelpMenu();
    menuBar()->setFont(QFont("Helvetica",11));
-
-
-
-
-
 }
 
 void MainWindow::createActions(){
@@ -1451,4 +1170,301 @@ void MainWindow::setCurrentFile(const QString &fileName)
 
 
         updateStatusBar();
+}
+void MainWindow::saveToPlaylist()
+{
+
+}
+
+void MainWindow::openDisc()
+{
+
+}
+
+void MainWindow::openNetworkStream()
+{
+
+}
+
+void MainWindow::openCaptureDevice()
+{
+
+}
+
+void MainWindow::openLocationFromClipBoard()
+{
+
+}
+
+void MainWindow::convertAndSave()
+{
+
+}
+
+void MainWindow::stream()
+{
+
+}
+
+void MainWindow::quitAtEndOfPlaylist(bool actionState)
+{
+
+}
+
+void MainWindow::menu()
+{
+
+}
+
+void MainWindow::faster()
+{
+
+}
+
+void MainWindow::slower()
+{
+
+}
+
+void MainWindow::jumpForward()
+{
+
+}
+
+void MainWindow::jumpBackward()
+{
+
+}
+
+void MainWindow::jumpToSpecificTime()
+{
+     goToTimeDialog *dialog = new goToTimeDialog(this);
+     connect(dialog,&goToTimeDialog::goToTime,playerPage,&PlayerPage::goToTime);
+     dialog->exec();
+
+}
+
+void MainWindow::play()
+{
+    if(currentFile.isEmpty())
+         openMultipleFiles();
+    else
+         playerPage->play();
+}
+
+void MainWindow::stop()
+{
+
+}
+
+void MainWindow::previous()
+{
+
+}
+
+void MainWindow::next()
+{
+
+}
+
+void MainWindow::record()
+{
+
+}
+
+void MainWindow::disableAudio()
+{
+
+}
+
+void MainWindow::track1()
+{
+
+}
+
+void MainWindow::spectrometerVisualization()
+{
+
+}
+
+void MainWindow::scopeVisualization()
+{
+
+}
+
+void MainWindow::spectrumVisaulization()
+{
+
+}
+
+void MainWindow::vuMeterVisualization()
+{
+
+}
+
+void MainWindow::goomVisualization()
+{
+
+}
+
+void MainWindow::disableVideo()
+{
+
+}
+
+void MainWindow::fullScreen(bool actionState)
+{
+
+}
+
+void MainWindow::alwaysFitWindow(bool actionState)
+{
+
+}
+
+void MainWindow::alwaysOnTop(bool actionState)
+{
+
+}
+
+void MainWindow::setAsWallpaper(bool actionState)
+{
+
+}
+
+void MainWindow::zoom()
+{
+
+}
+
+void MainWindow::setAspectRatio()
+{
+
+}
+
+void MainWindow::deInterlace()
+{
+
+}
+
+void MainWindow::deInterLaceMode()
+{
+
+}
+
+void MainWindow::postProcessing()
+{
+
+}
+
+void MainWindow::takeSnapshot()
+{
+
+}
+
+void MainWindow::addSubtitleFile()
+{
+
+}
+
+void MainWindow::subTrack()
+{
+
+}
+
+void MainWindow::effectsAndFilters()
+{
+   effectsAndFiltersDialog dialog(this);
+   dialog.exec();
+}
+
+void MainWindow::trackSynchronization()
+{
+
+}
+
+void MainWindow::mediaInformation()
+{
+  mediaInformationDialog dialog(this);
+  dialog.exec();
+}
+
+void MainWindow::codecInformation()
+{
+
+}
+
+void MainWindow::VLMConfiguration()
+{
+
+}
+
+void MainWindow::programGuide()
+{
+
+}
+
+void MainWindow::messages()
+{
+
+}
+
+void MainWindow::pluginsAndExtensions()
+{
+
+}
+
+void MainWindow::customiseInterface()
+{
+
+}
+
+void MainWindow::preferences()
+{
+
+}
+
+void MainWindow::dockedPlayList(bool isDockedPlayList)
+{
+    if(isDockedPlayList){
+
+    }
+    else{
+
+    }
+}
+
+void MainWindow::minimalInterface(bool actionState)
+{
+
+}
+
+void MainWindow::fullScreenInterface(bool actionState)
+{
+
+}
+
+void MainWindow::advancedControls(bool actionState)
+{
+
+}
+
+void MainWindow::donwloadSubtitles()
+{
+
+}
+
+void MainWindow::help()
+{
+
+}
+
+void MainWindow::checkForUpdates()
+{
+
+}
+
+void MainWindow::about()
+{
+
 }
